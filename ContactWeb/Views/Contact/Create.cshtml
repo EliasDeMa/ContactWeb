@@ -1,0 +1,47 @@
+﻿@model ContactWeb.Models.ContactCreateViewModel
+
+    <form asp-controller="Contact" asp-action="Create" method="post">
+        <div class="form-group">
+            <label asp-for="FirstName"></label>
+            <input class="form-control" asp-for="FirstName" />
+            <span class="text-danger" asp-validation-for="FirstName"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="LastName"></label>
+            <input class="form-control" asp-for="LastName" />
+            <span class="text-danger" asp-validation-for="LastName"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Email"></label>
+            <input class="form-control" asp-for="Email" type="email" />
+            <span class="text-danger" asp-validation-for="Email"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Address"></label>
+            <input class="form-control" asp-for="Address" />
+            <span class="text-danger" asp-validation-for="Address"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="PhoneNumber"></label>
+            <input class="form-control" asp-for="PhoneNumber" type="tel" />
+            <span class="text-danger" asp-validation-for="PhoneNumber"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Description"></label>
+            <textarea class="form-control" asp-for="Description"></textarea>
+            <span class="text-danger" asp-validation-for="Description"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="BirthDate"></label>
+            <input class="form-control" asp-for="BirthDate" type="date"/>
+            <span class="text-danger" asp-validation-for="BirthDate"></span>
+        </div>
+
+        <button class="btn btn-primary" type="submit">Add Contact</button>
+    </form>
