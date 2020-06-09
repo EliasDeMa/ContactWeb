@@ -1,0 +1,31 @@
+﻿@model IEnumerable<ContactIndexViewModel>
+
+<h1>Contacts</h1>
+
+@if (Model == null || !Model.Any())
+{
+    <p>No Contacts available.</p>
+}
+else
+{
+    <table cellpadding="5">
+        <tr>
+            <th>Name</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.ToString()
+                </td>
+            </tr>
+        }
+    </table>
+}
+
+<a asp-action="Create"
+   asp-controller="Contact"
+   class="btn btn-primary">
+    Add Contact
+</a>
