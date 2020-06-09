@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using ContactWeb.Database;
 using ContactWeb.Domain;
 using ContactWeb.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ContactWeb.Controllers
@@ -43,7 +45,8 @@ namespace ContactWeb.Controllers
                 Address = contactFromDb.Address,
                 Email = contactFromDb.Email,
                 Description = contactFromDb.Description,
-                BirthDate = contactFromDb.BirthDate
+                BirthDate = contactFromDb.BirthDate,
+                Avatar = contactFromDb.Avatar
             };
 
             return View(contact);
@@ -70,7 +73,8 @@ namespace ContactWeb.Controllers
                 Address = contact.Address,
                 Email = contact.Email,
                 Description = contact.Description,
-                BirthDate = contact.BirthDate
+                BirthDate = contact.BirthDate,
+                Avatar = getBytesFromFile(contact.Avatar)
             };
 
             _contactDatabase.Insert(contactToDb);
@@ -140,6 +144,16 @@ namespace ContactWeb.Controllers
             _contactDatabase.Delete(id);
 
             return RedirectToAction("Index");
+        }
+
+        public Byte[] getBytesFromFile(IFormFile file)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                file.CopyTo(memoryStream);
+
+                return memoryStream.ToArray();
+            }
         }
     }
 }
