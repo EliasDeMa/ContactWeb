@@ -67,6 +67,7 @@ namespace ContactWeb.Database
                 contact.Description = updatedContact.Description;
                 contact.PhoneNumber = updatedContact.PhoneNumber;
                 contact.Address = updatedContact.Address;
+                contact.Avatar = updatedContact.Avatar;
             }
         }
     }
