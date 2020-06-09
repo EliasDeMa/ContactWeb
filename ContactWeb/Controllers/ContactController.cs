@@ -77,5 +77,47 @@ namespace ContactWeb.Controllers
 
             return RedirectToAction("Index");
         }
+
+        public IActionResult Edit(int id)
+        {
+            var contactFromDb = _contactDatabase.GetContact(id);
+
+            var contact = new ContactEditViewModel()
+            {
+                FirstName = contactFromDb.FirstName,
+                LastName = contactFromDb.LastName,
+                PhoneNumber = contactFromDb.PhoneNumber,
+                Address = contactFromDb.Address,
+                Email = contactFromDb.Email,
+                Description = contactFromDb.Description,
+                BirthDate = contactFromDb.BirthDate
+            };
+
+            return View(contact);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(int id, ContactEditViewModel contact)
+        {
+            if (!TryValidateModel(contact))
+            {
+                return View(contact);
+            }
+
+            var contactToDb = new Contact()
+            {
+                FirstName = contact.FirstName,
+                LastName = contact.LastName,
+                PhoneNumber = contact.PhoneNumber,
+                Address = contact.Address,
+                Email = contact.Email,
+                Description = contact.Description,
+                BirthDate = contact.BirthDate
+            };
+
+            _contactDatabase.Update(id, contactToDb);
+
+            return RedirectToAction("Detail", new { Id = id });
+        }
     }
 }
