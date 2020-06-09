@@ -31,6 +31,24 @@ namespace ContactWeb.Controllers
             return View(contacts);
         }
 
+        public IActionResult Detail(int id)
+        {
+            var contactFromDb = _contactDatabase.GetContact(id);
+
+            var contact = new ContactDetailViewModel()
+            {
+                FirstName = contactFromDb.FirstName,
+                LastName = contactFromDb.LastName,
+                PhoneNumber = contactFromDb.PhoneNumber,
+                Address = contactFromDb.Address,
+                Email = contactFromDb.Email,
+                Description = contactFromDb.Description,
+                BirthDate = contactFromDb.BirthDate
+            };
+
+            return View(contact);
+        }
+
         public IActionResult Create()
         {
             return View();
