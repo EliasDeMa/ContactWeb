@@ -8,9 +8,9 @@
 }
 else
 {
-    <table cellpadding="2">
+    <table cellpadding="10">
         <tr>
-            <th colspan="3">Name</th>
+            <th colspan="4">Name</th>
         </tr>
 
         @foreach (var item in Model)
@@ -31,6 +31,13 @@ else
                        asp-controller="Contact"
                        asp-route-id="@item.Id">
                         Edit
+                    </a>
+                </td>
+                <td>
+                    <a asp-action="Delete"
+                       asp-controller="Contact"
+                       asp-route-id="@item.Id">
+                        Delete
                     </a>
                 </td>
             </tr>

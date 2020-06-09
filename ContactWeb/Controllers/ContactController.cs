@@ -119,5 +119,27 @@ namespace ContactWeb.Controllers
 
             return RedirectToAction("Detail", new { Id = id });
         }
+
+        public IActionResult Delete(int id)
+        {
+            var contactFromDb = _contactDatabase.GetContact(id);
+
+            var contact = new ContactDeleteViewModel()
+            {
+                Id = contactFromDb.Id,
+                FirstName = contactFromDb.FirstName,
+                LastName = contactFromDb.LastName,
+            };
+
+            return View(contact);
+        }
+
+        [HttpPost]
+        public IActionResult ConfirmDelete(int id)
+        {
+            _contactDatabase.Delete(id);
+
+            return RedirectToAction("Index");
+        }
     }
 }
