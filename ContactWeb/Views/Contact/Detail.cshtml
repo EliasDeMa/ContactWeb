@@ -1,5 +1,10 @@
 ﻿@model ContactWeb.Models.ContactDetailViewModel
 
+<strong>Avatar</strong>
+<p>
+    <img src="@ConvertBytesToImg(Model.Avatar)"/>
+</p>
+
 <strong>Name</strong>
 <p>@Model.FirstName @Model.LastName</p>
 
@@ -39,5 +44,12 @@ else
     int CalculateAge(DateTime releaseDate)
     {
         return (int)((DateTime.Now - releaseDate).Days / 365.25);
+    }
+
+    string ConvertBytesToImg(Byte[] image)
+    {
+        string imreBase64Data = Convert.ToBase64String(image);
+
+        return $"data:image/png;base64,{imreBase64Data}";
     }
 }
