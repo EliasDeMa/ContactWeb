@@ -1,9 +1,16 @@
 ﻿@model ContactWeb.Models.ContactDetailViewModel
 
 <strong>Avatar</strong>
-<p>
-    <img src="@ConvertBytesToImg(Model.Avatar)"/>
-</p>
+
+@if (Model.Avatar.Length > 0)
+{
+    <img src="@ConvertBytesToImg(Model.Avatar)" style="display:block"/>
+}
+else
+{
+    <p>No avatar available</p>
+}
+
 
 <strong>Name</strong>
 <p>@Model.FirstName @Model.LastName</p>
