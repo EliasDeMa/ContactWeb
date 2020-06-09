@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -31,5 +32,8 @@ namespace ContactWeb.Models
         [DataType(DataType.MultilineText)]
         [MaxLength(250, ErrorMessage = "Maximum 250 characters!")]
         public string Description { get; set; }
+        public byte[] FileBytes { get; set; }
+
+        public IFormFile Avatar { get; set; }
     }
 }

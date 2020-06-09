@@ -65,6 +65,17 @@ namespace ContactWeb.Controllers
                 return View(contact);
             }
 
+            byte[] file;
+
+            if (contact.Avatar != null)
+            {
+                file = GetBytesFromFile(contact.Avatar);
+            }
+            else
+            {
+                file = new byte[] { };
+            }
+
             var contactToDb = new Contact()
             {
                 FirstName = contact.FirstName,
@@ -74,7 +85,7 @@ namespace ContactWeb.Controllers
                 Email = contact.Email,
                 Description = contact.Description,
                 BirthDate = contact.BirthDate,
-                Avatar = getBytesFromFile(contact.Avatar)
+                Avatar = file
             };
 
             _contactDatabase.Insert(contactToDb);
@@ -94,7 +105,8 @@ namespace ContactWeb.Controllers
                 Address = contactFromDb.Address,
                 Email = contactFromDb.Email,
                 Description = contactFromDb.Description,
-                BirthDate = contactFromDb.BirthDate
+                BirthDate = contactFromDb.BirthDate,
+                FileBytes = contactFromDb.Avatar
             };
 
             return View(contact);
@@ -118,6 +130,12 @@ namespace ContactWeb.Controllers
                 Description = contact.Description,
                 BirthDate = contact.BirthDate
             };
+
+            if (contact.Avatar != null)
+            {
+                var bytes = GetBytesFromFile(contact.Avatar);
+                contactToDb.Avatar = bytes;
+            }
 
             _contactDatabase.Update(id, contactToDb);
 
@@ -146,13 +164,19 @@ namespace ContactWeb.Controllers
             return RedirectToAction("Index");
         }
 
-        public Byte[] getBytesFromFile(IFormFile file)
+        public Byte[] GetBytesFromFile(IFormFile file)
         {
-            using (var memoryStream = new MemoryStream())
+            var extension = new FileInfo(file.FileName).Extension;
+            if (extension == ".jpg" || extension == ".png" || extension == ".PNG")
             {
+                using var memoryStream = new MemoryStream();
                 file.CopyTo(memoryStream);
 
                 return memoryStream.ToArray();
+            }
+            else
+            {
+                return new byte[]{ };
             }
         }
     }
