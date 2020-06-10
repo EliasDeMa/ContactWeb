@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,10 +11,12 @@ namespace ContactWeb.Models
 {
     public class ContactEditViewModel
     {
+        [DisplayName("First name")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "First name cannot be empty")]
         [MaxLength(25, ErrorMessage = "Maximum 30 characters!")]
         public string FirstName { get; set; }
 
+        [DisplayName("Last name")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Last name cannot be empty")]
         [MaxLength(25, ErrorMessage = "Maximum 30 characters!")]
         public string LastName { get; set; }
@@ -22,9 +25,11 @@ namespace ContactWeb.Models
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
+        [DisplayName("Birthdate")]
         [DataType(DataType.DateTime)]
         public DateTime BirthDate { get; set; }
 
+        [DisplayName("Phonenumber")]
         [DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; }
 
