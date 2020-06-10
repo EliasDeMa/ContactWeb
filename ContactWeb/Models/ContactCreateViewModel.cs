@@ -30,7 +30,7 @@ namespace ContactWeb.Models
         [DataType(DataType.DateTime)]
         public DateTime BirthDate { get; set; }
 
-        [DisplayName("Phonenumber")]
+        [DisplayName("Phone number")]
         [DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; }
 
