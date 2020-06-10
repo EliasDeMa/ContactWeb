@@ -43,5 +43,7 @@ namespace ContactWeb.Models
         public ContactType ContactType { get; set; }
 
         public IFormFile Avatar { get; set; }
+
+        public IEnumerable<ContactType> Types { get; } = Enum.GetValues(typeof(ContactType)).Cast<ContactType>();
     }
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ContactWeb.Database;
 using ContactWeb.Domain;
 using ContactWeb.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,10 +15,12 @@ namespace ContactWeb.Controllers
     public class ContactController : Controller
     {
         private readonly IContactDatabase _contactDatabase;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
-        public ContactController(IContactDatabase contacts)
+        public ContactController(IContactDatabase contacts, IWebHostEnvironment hostEnvironment)
         {
             _contactDatabase = contacts;
+            _hostEnvironment = hostEnvironment;
         }
 
         public IActionResult Index()
@@ -47,7 +50,7 @@ namespace ContactWeb.Controllers
                 Description = contactFromDb.Description,
                 BirthDate = contactFromDb.BirthDate,
                 ContactType = contactFromDb.ContactType,
-                Avatar = contactFromDb.Avatar
+                PhotoUrl = contactFromDb.PhotoUrl
             };
 
             return View(contact);
@@ -55,7 +58,10 @@ namespace ContactWeb.Controllers
 
         public IActionResult Create()
         {
-            return View();
+            var vm = new ContactCreateViewModel();
+            vm.BirthDate = new DateTime(1990, 1, 1);
+
+            return View(new ContactCreateViewModel());
         }
 
         [HttpPost]
@@ -64,17 +70,6 @@ namespace ContactWeb.Controllers
             if (!TryValidateModel(contact))
             {
                 return View(contact);
-            }
-
-            byte[] file;
-
-            if (contact.Avatar != null)
-            {
-                file = GetBytesFromFile(contact.Avatar);
-            }
-            else
-            {
-                file = new byte[] { };
             }
 
             var contactToDb = new Contact()
@@ -87,8 +82,20 @@ namespace ContactWeb.Controllers
                 Description = contact.Description,
                 BirthDate = contact.BirthDate,
                 ContactType = contact.ContactType,
-                Avatar = file
             };
+
+            if (contact.Avatar != null)
+            {
+                var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(contact.Avatar.FileName);
+                var path = Path.Combine(_hostEnvironment.WebRootPath, "photos", uniqueFileName);
+
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    contact.Avatar.CopyTo(stream);
+                }
+
+                contactToDb.PhotoUrl = "/photos/" + uniqueFileName;
+            }
 
             _contactDatabase.Insert(contactToDb);
 
@@ -109,7 +116,7 @@ namespace ContactWeb.Controllers
                 Description = contactFromDb.Description,
                 BirthDate = contactFromDb.BirthDate,
                 ContactType = contactFromDb.ContactType,
-                FileBytes = contactFromDb.Avatar
+                PhotoUrl = contactFromDb.PhotoUrl
             };
 
             return View(contact);
@@ -137,12 +144,19 @@ namespace ContactWeb.Controllers
 
             if (contact.Avatar != null)
             {
-                var bytes = GetBytesFromFile(contact.Avatar);
-                contactToDb.Avatar = bytes;
+                var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(contact.Avatar.FileName);
+                var path = Path.Combine(_hostEnvironment.WebRootPath, "photos", uniqueFileName);
+
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    contact.Avatar.CopyTo(stream);
+                }
+
+                contactToDb.PhotoUrl = "/photos/" + uniqueFileName;
             }
             else
             {
-                contactToDb.Avatar = contact.FileBytes;
+                contactToDb.PhotoUrl = contact.PhotoUrl;
             }
 
             _contactDatabase.Update(id, contactToDb);

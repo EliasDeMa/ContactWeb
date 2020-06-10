@@ -1,11 +1,5 @@
 ﻿@model ContactWeb.Models.ContactEditViewModel
 
-@using ContactWeb.Domain
-
-@{
-    var list = new SelectList(Enum.GetValues(typeof(ContactType)));
-}
-
 <form asp-controller="Contact"
       asp-action="Edit"
       method="post"
@@ -55,16 +49,16 @@
     <div class="form-group">
         <label asp-for="ContactType"></label><br />
         <select asp-for="ContactType"
-                asp-items="@list">
+                asp-items="@(new SelectList(Model.Types))">
             <option>Please select one</option>
         </select>
     </div>
 
 
     <div>
-        @if (Model.FileBytes.Length > 0)
+        @if (Model.PhotoUrl.Length > 0)
         {
-            <img src="@ConvertBytesToImg(Model.FileBytes)" />
+            <img src="@Model.PhotoUrl" />
         }
         else
         {

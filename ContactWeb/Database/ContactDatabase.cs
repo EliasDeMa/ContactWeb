@@ -69,9 +69,9 @@ namespace ContactWeb.Database
                 contact.Address = updatedContact.Address;   
             }
 
-            if (updatedContact.Avatar != null)
+            if (updatedContact.PhotoUrl != null)
             {
-                contact.Avatar = updatedContact.Avatar;
+                contact.PhotoUrl = updatedContact.PhotoUrl;
             }
         }
     }

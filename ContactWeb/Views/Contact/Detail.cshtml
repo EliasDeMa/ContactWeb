@@ -2,9 +2,9 @@
 
 <strong>Avatar</strong>
 
-@if (Model.Avatar.Length > 0)
+@if (Model.PhotoUrl.Length > 0)
 {
-    <img src="@ConvertBytesToImg(Model.Avatar)" style="display:block"/>
+    <img src="@Model.PhotoUrl" style="display:block" height="150"/>
 }
 else
 {
