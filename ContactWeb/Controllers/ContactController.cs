@@ -61,7 +61,7 @@ namespace ContactWeb.Controllers
             var vm = new ContactCreateViewModel();
             vm.BirthDate = new DateTime(1990, 1, 1);
 
-            return View(new ContactCreateViewModel());
+            return View(vm);
         }
 
         [HttpPost]
