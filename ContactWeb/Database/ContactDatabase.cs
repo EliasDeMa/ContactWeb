@@ -66,7 +66,11 @@ namespace ContactWeb.Database
                 contact.BirthDate = updatedContact.BirthDate;
                 contact.Description = updatedContact.Description;
                 contact.PhoneNumber = updatedContact.PhoneNumber;
-                contact.Address = updatedContact.Address;
+                contact.Address = updatedContact.Address;   
+            }
+
+            if (updatedContact.Avatar != null)
+            {
                 contact.Avatar = updatedContact.Avatar;
             }
         }

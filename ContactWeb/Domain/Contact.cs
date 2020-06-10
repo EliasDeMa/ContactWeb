@@ -17,5 +17,14 @@ namespace ContactWeb.Domain
         public string Address { get; set; }
         public string Description { get; set; }
         public Byte[] Avatar { get; set; }
+        public ContactType ContactType { get; set; }
+    }
+
+    public enum ContactType
+    {
+        Family,
+        Friend,
+        Colleague,
+        Stranger
     }
 }

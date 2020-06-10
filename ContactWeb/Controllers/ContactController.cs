@@ -46,6 +46,7 @@ namespace ContactWeb.Controllers
                 Email = contactFromDb.Email,
                 Description = contactFromDb.Description,
                 BirthDate = contactFromDb.BirthDate,
+                ContactType = contactFromDb.ContactType,
                 Avatar = contactFromDb.Avatar
             };
 
@@ -85,6 +86,7 @@ namespace ContactWeb.Controllers
                 Email = contact.Email,
                 Description = contact.Description,
                 BirthDate = contact.BirthDate,
+                ContactType = contact.ContactType,
                 Avatar = file
             };
 
@@ -106,6 +108,7 @@ namespace ContactWeb.Controllers
                 Email = contactFromDb.Email,
                 Description = contactFromDb.Description,
                 BirthDate = contactFromDb.BirthDate,
+                ContactType = contactFromDb.ContactType,
                 FileBytes = contactFromDb.Avatar
             };
 
@@ -128,6 +131,7 @@ namespace ContactWeb.Controllers
                 Address = contact.Address,
                 Email = contact.Email,
                 Description = contact.Description,
+                ContactType = contact.ContactType,
                 BirthDate = contact.BirthDate
             };
 
@@ -135,6 +139,10 @@ namespace ContactWeb.Controllers
             {
                 var bytes = GetBytesFromFile(contact.Avatar);
                 contactToDb.Avatar = bytes;
+            }
+            else
+            {
+                contactToDb.Avatar = contact.FileBytes;
             }
 
             _contactDatabase.Update(id, contactToDb);
