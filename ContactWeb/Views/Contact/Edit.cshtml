@@ -56,7 +56,7 @@
 
 
     <div>
-        @if (string.IsNullOrEmpty(Model.PhotoUrl))
+        @if (!string.IsNullOrEmpty(Model.PhotoUrl))
         {
             <img src="@Model.PhotoUrl" />
         }
