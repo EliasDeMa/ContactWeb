@@ -58,8 +58,10 @@ namespace ContactWeb.Controllers
 
         public IActionResult Create()
         {
-            var vm = new ContactCreateViewModel();
-            vm.BirthDate = new DateTime(1990, 1, 1);
+            var vm = new ContactCreateViewModel
+            {
+                BirthDate = new DateTime(1990, 1, 1)
+            };
 
             return View(vm);
         }
@@ -159,7 +161,8 @@ namespace ContactWeb.Controllers
             }
             else
             {
-                contactToDb.PhotoUrl = contact.PhotoUrl;
+                Contact contactFromDb = _contactDatabase.GetContact(id);
+                contactToDb.PhotoUrl = contactFromDb.PhotoUrl;
             }
 
             _contactDatabase.Update(id, contactToDb);
