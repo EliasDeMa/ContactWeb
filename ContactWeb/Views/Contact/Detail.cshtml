@@ -2,7 +2,7 @@
 
 <strong>Avatar</strong>
 
-@if (Model.PhotoUrl.Length > 0)
+@if (!string.IsNullOrEmpty(Model.PhotoUrl))
 {
     <img src="@Model.PhotoUrl" style="display:block" height="150"/>
 }
