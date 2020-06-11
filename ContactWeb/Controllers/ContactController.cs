@@ -148,9 +148,13 @@ namespace ContactWeb.Controllers
             {
                 var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(contact.Avatar.FileName);
                 var path = Path.Combine(_hostEnvironment.WebRootPath, "photos", uniqueFileName);
-                var prevPath = Path.Combine(_hostEnvironment.WebRootPath, "photos", contact.PhotoUrl.Substring(8));
+                Contact contactFromDb = _contactDatabase.GetContact(id);
 
-                System.IO.File.Delete(prevPath);
+                if (!string.IsNullOrEmpty(contactFromDb.PhotoUrl))
+                {
+                    var prevPath = Path.Combine(_hostEnvironment.WebRootPath, "photos", contactFromDb.PhotoUrl.Substring(8));
+                    System.IO.File.Delete(prevPath);
+                }                 
 
                 using (var stream = new FileStream(path, FileMode.Create))
                 {
@@ -162,7 +166,9 @@ namespace ContactWeb.Controllers
             else
             {
                 Contact contactFromDb = _contactDatabase.GetContact(id);
-                contactToDb.PhotoUrl = contactFromDb.PhotoUrl;
+
+                if (!string.IsNullOrEmpty(contactFromDb.PhotoUrl))
+                    contactToDb.PhotoUrl = contactFromDb.PhotoUrl;
             }
 
             _contactDatabase.Update(id, contactToDb);
@@ -187,6 +193,13 @@ namespace ContactWeb.Controllers
         [HttpPost]
         public IActionResult ConfirmDelete(int id)
         {
+            Contact contact = _contactDatabase.GetContact(id);
+            if (!string.IsNullOrEmpty(contact.PhotoUrl))
+            {
+                var prevPath = Path.Combine(_hostEnvironment.WebRootPath, "photos", contact.PhotoUrl.Substring(8));
+                System.IO.File.Delete(prevPath);
+            }
+
             _contactDatabase.Delete(id);
 
             return RedirectToAction("Index");
