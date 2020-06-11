@@ -146,6 +146,9 @@ namespace ContactWeb.Controllers
             {
                 var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(contact.Avatar.FileName);
                 var path = Path.Combine(_hostEnvironment.WebRootPath, "photos", uniqueFileName);
+                var prevPath = Path.Combine(_hostEnvironment.WebRootPath, "photos", contact.PhotoUrl.Substring(8));
+
+                System.IO.File.Delete(prevPath);
 
                 using (var stream = new FileStream(path, FileMode.Create))
                 {
